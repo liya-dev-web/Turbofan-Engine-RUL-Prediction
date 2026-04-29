@@ -20,9 +20,7 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 warnings.filterwarnings("ignore")
 np.random.seed(42)
 
-# ─────────────────────────────────────────────────────────────────────────────
 # 1. DATA SIMULATION
-# ─────────────────────────────────────────────────────────────────────────────
 
 SENSOR_NAMES = [f"sensor_{i:02d}" for i in range(1, 22)]
 SETTING_NAMES = ["op_setting_1", "op_setting_2", "op_setting_3"]
@@ -63,9 +61,8 @@ def compute_rul(df: pd.DataFrame, clip_max: int = 130) -> pd.DataFrame:
     df.drop(columns=["max_cycle"], inplace=True)
     return df
 
-# ─────────────────────────────────────────────────────────────────────────────
 # 2. FEATURE ENGINEERING
-# ─────────────────────────────────────────────────────────────────────────────
+
 
 def engineer_features(df: pd.DataFrame, window: int = 15) -> pd.DataFrame:
     df = df.sort_values(["unit_id", "cycle"]).copy()
@@ -93,9 +90,7 @@ def unit_train_test_split(df: pd.DataFrame, test_frac: float = 0.2):
     test  = df[ df["unit_id"].isin(test_units)].copy()
     return train, test
 
-# ─────────────────────────────────────────────────────────────────────────────
 # 3. EVALUATION
-# ─────────────────────────────────────────────────────────────────────────────
 
 def nasa_score(y_true, y_pred):
     diff = y_pred - y_true
@@ -110,9 +105,7 @@ def evaluate(name, y_true, y_pred):
     print(f"  {name:<30s}  RMSE={rmse:6.2f}  MAE={mae:6.2f}  R2={r2:.3f}  NASA_Score={score:,.0f}")
     return {"model": name, "RMSE": rmse, "MAE": mae, "R2": r2, "NASA_Score": score}
 
-# ─────────────────────────────────────────────────────────────────────────────
 # 4. MODELS (OPTIMIZED FOR MULTI-CORE)
-# ─────────────────────────────────────────────────────────────────────────────
 
 def build_models():
     return {
@@ -155,9 +148,7 @@ def tune_best_model(X_train, y_train):
     print(f"  CV RMSE     : {-gs.best_score_:.2f}")
     return gs.best_estimator_
 
-# ─────────────────────────────────────────────────────────────────────────────
 # 5. VISUALIZATION
-# ─────────────────────────────────────────────────────────────────────────────
 
 def plot_results(results_df, best_name, best_model, X_test, y_test, feature_names, df_raw):
     palette = {"Ridge Regression": "#4C72B0", "Random Forest": "#DD8452", "Gradient Boosting": "#55A868"}
@@ -223,10 +214,7 @@ def plot_results(results_df, best_name, best_model, X_test, y_test, feature_name
 
     plt.savefig("rul_prediction_results_optimized.png", dpi=150, bbox_inches="tight", facecolor=fig.get_facecolor())
     plt.close()
-
-# ─────────────────────────────────────────────────────────────────────────────
 # MAIN
-# ─────────────────────────────────────────────────────────────────────────────
 
 def main():
     print("=" * 65)
