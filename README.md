@@ -75,7 +75,3 @@ python project1_rul_prediction.py
 
 ---
 
-## Author
-
-Built independently as part of ML engineering portfolio.  
-**Skills demonstrated:** End-to-end ML pipeline, feature engineering, model comparison, domain-specific evaluation metrics, model serialization.
